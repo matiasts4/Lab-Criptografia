@@ -1,0 +1,7 @@
+FROM ubuntu:20.10
+
+RUN sed -i -e 's/archive.ubuntu.com\|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+
+RUN apt-get update && apt-get install -y openssh-client iputils-ping net-tools && rm -rf /var/lib/apt/lists/*
+
+CMD ["tail", "-f", "/dev/null"]

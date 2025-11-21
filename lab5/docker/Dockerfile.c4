@@ -1,0 +1,16 @@
+FROM ubuntu:22.10
+
+RUN sed -i -e 's/archive.ubuntu.com\|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+
+RUN apt-get update && apt-get install -y openssh-client openssh-server iputils-ping net-tools tcpdump nano && rm -rf /var/lib/apt/lists/*
+
+# Configure SSH Server
+RUN mkdir -p /var/run/sshd
+RUN useradd -m -s /bin/bash prueba && echo "prueba:prueba" | chpasswd
+
+# Allow password authentication
+RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+
+EXPOSE 22
+
+CMD ["/usr/sbin/sshd", "-D"]
